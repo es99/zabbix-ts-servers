@@ -12,6 +12,9 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
+            - name: Validando Config
+              run: docker compose config
+
             - name: Tests
               uses: hoverkraft-tech/compose-action@v2.0.1
               with:
