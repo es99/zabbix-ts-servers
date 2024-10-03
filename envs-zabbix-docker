@@ -1,0 +1,6 @@
+DB_SERVER_HOST=db
+MYSQL_ROOT_PASSWORD=engelsink666
+MYSQL_USER=zabbix
+ZBX_SERVER_HOST=zabbix-server
+PHP_TZ=America/Recife
+ZBX_ACTIVE_ALLOW=false
