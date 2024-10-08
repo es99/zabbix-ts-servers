@@ -1,6 +1,21 @@
-name: "zabbix-ts-servers"
+version: '3'
 
 services:
+
+  reverse-proxy:
+    image: traefik:v3.1
+    command:
+      --api.insecure=true
+      --providers.docker=true
+      --providers.docker.exposedbydefault=false
+      --entryPoints.web.address=:80
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - zabbix
 
   zabbix-agent-2:
     image: zabbix/zabbix-agent2:alpine-7.0-latest
@@ -18,8 +33,12 @@ services:
       - db
     env_file:
       - envs-zabbix-docker
-    ports:
-      - "8000:8080"
+    #ports:
+      # - "8000:8080"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.zabbix-frontend.rule=Host(`zabbix.localhost`)
+      - traefik.http.routers.zabbix-frontend.entrypoints=web
 
   zabbix-server:
     image: zabbix/zabbix-server-mysql:alpine-7.0-latest
